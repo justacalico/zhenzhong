@@ -1,0 +1,23 @@
+{
+  "@@locale": "ga",
+  "appTitle": "震中 Zhenzhong",
+  "tagline": "Cluiche solitaire Mahjongg saor in aisce",
+  "play": "Imirt sa bhrabhsálaí",
+  "download": "Íoslódáil",
+  "releases": "Eisiúintí ar GitLab",
+  "flatpak": "Suiteáil Flatpak in aon chliceáil amháin",
+  "theme": "Téama",
+  "themeSystem": "Córas",
+  "themeLight": "Geal",
+  "themeDark": "Dorcha",
+  "themeOled": "OLED",
+  "featuresTitle": "Cén fáth 震中",
+  "f1": "Leagan amach turtar, 144 tíl",
+  "f2": "Leideanna, cealaigh agus meascadh",
+  "f3": "Deisce, soghluaiste agus gréasán",
+  "f4": "Gan fhógraí, gan rianaire, AGPL-3.0",
+  "loadingReleases": "Eisiúintí á lódáil…",
+  "noReleases": "Gan aon eisiúint fós",
+  "flatpakCmd": "Suiteáil le Flatpak",
+  "sourceCode": "Cód foinse"
+}

@@ -1,0 +1,23 @@
+{
+  "@@locale": "zh",
+  "appTitle": "震中 Zhenzhong",
+  "tagline": "一款自由开源的麻将连连看游戏",
+  "play": "在浏览器中游玩",
+  "download": "下载",
+  "releases": "GitLab 上的版本",
+  "flatpak": "一键 Flatpak 安装",
+  "theme": "主题",
+  "themeSystem": "跟随系统",
+  "themeLight": "浅色",
+  "themeDark": "深色",
+  "themeOled": "OLED",
+  "featuresTitle": "为什么选择震中",
+  "f1": "经典乌龟布局，144 张牌",
+  "f2": "提示、撤销与洗牌",
+  "f3": "桌面、移动与网页",
+  "f4": "无广告、无追踪、AGPL-3.0",
+  "loadingReleases": "正在加载版本…",
+  "noReleases": "暂无版本",
+  "flatpakCmd": "使用 Flatpak 安装",
+  "sourceCode": "源代码"
+}

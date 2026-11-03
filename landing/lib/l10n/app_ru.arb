@@ -1,0 +1,23 @@
+{
+  "@@locale": "ru",
+  "appTitle": "震中 Zhenzhong",
+  "tagline": "Свободный пасьянс маджонг с открытым кодом",
+  "play": "Играть в браузере",
+  "download": "Скачать",
+  "releases": "Релизы на GitLab",
+  "flatpak": "Установка Flatpak в один клик",
+  "theme": "Тема",
+  "themeSystem": "Системная",
+  "themeLight": "Светлая",
+  "themeDark": "Тёмная",
+  "themeOled": "OLED",
+  "featuresTitle": "Почему 震中",
+  "f1": "Классическая раскладка, 144 кости",
+  "f2": "Подсказки, отмена и перемешивание",
+  "f3": "Десктоп, мобильные и веб",
+  "f4": "Без рекламы и слежки, AGPL-3.0",
+  "loadingReleases": "Загрузка релизов…",
+  "noReleases": "Релизов пока нет",
+  "flatpakCmd": "Установить через Flatpak",
+  "sourceCode": "Исходный код"
+}

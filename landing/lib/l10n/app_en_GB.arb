@@ -1,0 +1,23 @@
+{
+  "@@locale": "en_GB",
+  "appTitle": "震中 Zhenzhong",
+  "tagline": "A free and open source Mahjongg solitaire game",
+  "play": "Play in your browser",
+  "download": "Download",
+  "releases": "Releases on GitLab",
+  "flatpak": "One-click Flatpak install",
+  "theme": "Theme",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "themeOled": "OLED",
+  "featuresTitle": "Why 震中",
+  "f1": "Classic turtle layout, 144 tiles",
+  "f2": "Hints, undo and shuffle",
+  "f3": "Desktop, mobile and web",
+  "f4": "No ads, no tracking, AGPL-3.0",
+  "loadingReleases": "Loading releases…",
+  "noReleases": "No releases yet",
+  "flatpakCmd": "Install with Flatpak",
+  "sourceCode": "Source code"
+}

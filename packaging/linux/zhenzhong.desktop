@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=震中 Zhenzhong
+Comment=A Mahjongg solitaire game
+Exec=zhenzhong
+Icon=zhenzhong
+Type=Application
+Categories=Game;BoardGame;
+Keywords=mahjongg;mahjong;solitaire;game;
