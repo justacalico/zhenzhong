@@ -50,4 +50,4 @@ app.*.map.json
 *.jks
 key.properties
 android/key.properties
-packaging/flatpak/bundle/
+packaging/flatpak/src/

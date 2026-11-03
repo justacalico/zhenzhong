@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
@@ -33,8 +36,8 @@ android {
         create("release") {
             val keyFile = rootProject.file("key.properties")
             if (keyFile.exists()) {
-                val keyProps = java.util.Properties()
-                keyProps.load(java.io.FileInputStream(keyFile))
+                val keyProps = Properties()
+                keyProps.load(FileInputStream(keyFile))
                 storeFile = rootProject.file(keyProps.getProperty("storeFile"))
                 storePassword = keyProps.getProperty("storePassword")
                 keyAlias = keyProps.getProperty("keyAlias")
