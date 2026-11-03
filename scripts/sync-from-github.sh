@@ -73,3 +73,41 @@ glab release create "$RELEASE_TAG" \
   --ref "$RELEASE_COMMIT" \
   --use-package-registry \
   "$PROJECT_DIR/release-assets"/*
+
+# Regenerate the AltStore source so it always points at released IPAs.
+IPA=$(ls release-assets/*-unsigned.ipa 2>/dev/null | head -n1 || true)
+if [ -n "$IPA" ]; then
+  IPA_NAME=$(basename "$IPA")
+  DL="https://gitlab.com/$CI_PROJECT_PATH/-/releases/$RELEASE_TAG/downloads/$IPA_NAME"
+  VER="${RELEASE_TAG#v}"
+  python3 - "$DL" "$VER" "$RELEASE_TAG" <<'PY'
+import json, sys, datetime
+dl, ver, tag = sys.argv[1:4]
+with open('repos/altstore.json') as f:
+    src = json.load(f)
+app = src['apps'][0]
+versions = app.setdefault('versions', [])
+versions.insert(0, {
+    'version': ver,
+    'date': datetime.datetime.now(datetime.timezone.utc).date().isoformat(),
+    'downloadURL': dl,
+    'size': 0,
+    'minOSVersion': '15.0',
+})
+for v in versions:
+    if v.get('size') == 0:
+        v.pop('size', None)
+app['version'] = ver
+app['versionDate'] = versions[0]['date']
+app['versionDescription'] = f'Zhenzhong {tag}'
+app['downloadURL'] = dl
+with open('repos/altstore.json', 'w') as f:
+    json.dump(src, f, ensure_ascii=False, indent=2)
+PY
+  if [ -n "${GITLAB_RELEASE_SSH_KEY:-}" ]; then
+    git add repos/altstore.json
+    git -c user.name="GitLab CI" -c user.email="ci@gitlab.com" \
+      commit -qm "chore: 更新 AltStore 源至 $RELEASE_TAG" || true
+    git push gitlab-ssh HEAD:main || true
+  fi
+fi
