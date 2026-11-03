@@ -20,7 +20,7 @@ WORKFLOW="build.yml"
 # stderr of the failed call so secondary limits (which leave the core
 # quota untouched) are detected too.
 rate_limit_wait() {
-  local err="${1:-}" remaining reset now delay=0
+  local err="${1:-}" attempt="${2:-1}" remaining reset now delay=0
   remaining=$(gh api rate_limit -q '.resources.core.remaining' 2>/dev/null || true)
   if [ "$remaining" = "0" ]; then
     reset=$(gh api rate_limit -q '.resources.core.reset' 2>/dev/null || true)
@@ -30,10 +30,15 @@ rate_limit_wait() {
       if [ "$delay" -gt 900 ]; then
         delay=900
       fi
+    else
+      delay=900
     fi
   elif printf '%s' "$err" | grep -qi 'rate limit'; then
     # Secondary/abuse limits keep remaining > 0; back off generously.
-    delay=60
+    delay=$((attempt * 60))
+    if [ "$delay" -gt 600 ]; then
+      delay=600
+    fi
   fi
   if [ "$delay" -gt 0 ]; then
     echo "GitHub API rate limited; waiting ${delay}s" >&2
@@ -77,10 +82,10 @@ find_run() {
 watch_run() {
   local run_id="$1" conclusion="" attempt err_file api_err
   echo "Watching GitHub run $run_id..."
-  for attempt in $(seq 1 8); do
+  for attempt in $(seq 1 12); do
     # --exit-status does not treat every non-success conclusion as a
     # failure, so always verify the conclusion from the API afterwards.
-    gh run watch "$run_id" -R "$REPO" --exit-status 2>&1 || true
+    gh run watch "$run_id" -R "$REPO" --interval 60 --exit-status 2>&1 || true
 
     err_file=$(mktemp)
     if conclusion=$(gh api "repos/$REPO/actions/runs/$run_id" -q '.conclusion' 2>"$err_file"); then
@@ -99,9 +104,9 @@ watch_run() {
         return 1
         ;;
       *)
-        if [ "$attempt" -lt 8 ]; then
+        if [ "$attempt" -lt 12 ]; then
           echo "gh run watch lost connection (attempt $attempt), retrying..." >&2
-          rate_limit_wait "$api_err"
+          rate_limit_wait "$api_err" "$attempt"
           sleep 10
         fi
         ;;
