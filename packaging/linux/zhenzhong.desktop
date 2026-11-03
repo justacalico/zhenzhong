@@ -2,7 +2,7 @@
 Name=震中 Zhenzhong
 Comment=Mahjongg solitaire
 Exec=zhenzhong
-Icon=zhenzhong
+Icon=gitlab.httpanimations.zhenzhong
 Terminal=false
 Type=Application
 Categories=Game;BoardGame;
