@@ -1,37 +1,39 @@
 #!/bin/bash
 set -euo pipefail
-FLUTTER_VER=3.47.7
-mkdir -p /tmp/flutter-sdk
-if [ ! -x /tmp/flutter-sdk/bin/flutter ]; then
-  curl -fsSL https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VER}-stable.tar.xz -o /tmp/flutter.tar.xz
-  tar -xJf /tmp/flutter.tar.xz -C /tmp/flutter-sdk --strip-components=1
+GH_REPO=justacalico/zhenzhong
+mkdir -p public/app public/flatpak
+
+RUN_ID="${GITHUB_RUN_ID:-}"
+if [ -z "$RUN_ID" ]; then
+  RUN_ID=$(gh api "repos/$GH_REPO/actions/workflows/build.yml/runs?head_sha=$CI_COMMIT_SHA&per_page=5" \
+    -q '.workflow_runs[0].id' 2>/dev/null || true)
 fi
-export PATH="/tmp/flutter-sdk/bin:$PATH"
-git config --global --add safe.directory /tmp/flutter-sdk
-mkdir -p public/app
-cd landing && flutter pub get && flutter build web --release --base-href /"$CI_PROJECT_NAME"/ && cd ..
-cp -r landing/build/web/. public/
-flutter pub get
-flutter build web --release --base-href /"$CI_PROJECT_NAME"/app/
-cp -r build/web/. public/app/
-mkdir -p public/flatpak
+
+if [ -n "$RUN_ID" ]; then
+  gh run download "$RUN_ID" -R "$GH_REPO" -n web -D /tmp/art-web || true
+  gh run download "$RUN_ID" -R "$GH_REPO" -n linux -D /tmp/art-linux || true
+  gh run download "$RUN_ID" -R "$GH_REPO" -n linux-arm64 -D /tmp/art-arm || true
+fi
+
+if [ -f /tmp/art-web/zhenzhong-landing.tar.gz ]; then
+  tar -xzf /tmp/art-web/zhenzhong-landing.tar.gz -C public
+fi
+if [ -f /tmp/art-web/zhenzhong-web.tar.gz ]; then
+  tar -xzf /tmp/art-web/zhenzhong-web.tar.gz -C public/app
+fi
+
 REPO_TMP=$(mktemp -d)
-if [ -n "${GITHUB_RUN_ID:-}" ]; then
-  for arch in x86_64 aarch64; do
-    if gh run download "$GITHUB_RUN_ID" -R justacalico/zhenzhong -n "linux$([ $arch = aarch64 ] && echo -arm64 || echo '')" -p 'flatpak-repo-*' -D "$REPO_TMP/$arch" 2>/dev/null; then
-      tar -xzf "$REPO_TMP/$arch"/flatpak-repo-*.tar.gz -C "$REPO_TMP/$arch"
-    fi
-  done
-fi
-for arch in x86_64 aarch64; do
-  if [ -d "$REPO_TMP/$arch/repo" ]; then
+for pair in "/tmp/art-linux:x86_64" "/tmp/art-arm:aarch64"; do
+  dir="${pair%%:*}"
+  if ls "$dir"/flatpak-repo-*.tar.gz >/dev/null 2>&1; then
+    mkdir -p "$REPO_TMP/extract"
+    tar -xzf "$dir"/flatpak-repo-*.tar.gz -C "$REPO_TMP/extract"
     ostree --repo=public/flatpak init --mode=archive-z2 2>/dev/null || true
-    ostree --repo=public/flatpak pull-local "$REPO_TMP/$arch/repo" 2>/dev/null || true
-  elif [ -d "$REPO_TMP/$arch" ]; then
-    ostree --repo=public/flatpak init --mode=archive-z2 2>/dev/null || true
-    ostree --repo=public/flatpak pull-local "$REPO_TMP/$arch" 2>/dev/null || true
+    ostree --repo=public/flatpak pull-local "$REPO_TMP/extract" || true
+    rm -rf "$REPO_TMP/extract"
   fi
 done
+
 if [ -n "${FLATPAK_GPG_KEY:-}" ]; then
   mkdir -p .gpg && chmod 700 .gpg
   echo "$FLATPAK_GPG_KEY" | base64 -d | gpg --batch --homedir .gpg --import 2>/dev/null || true

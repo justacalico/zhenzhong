@@ -80,30 +80,20 @@ if [ -n "$IPA" ]; then
   IPA_NAME=$(basename "$IPA")
   DL="https://gitlab.com/$CI_PROJECT_PATH/-/releases/$RELEASE_TAG/downloads/$IPA_NAME"
   VER="${RELEASE_TAG#v}"
-  python3 - "$DL" "$VER" "$RELEASE_TAG" <<'PY'
-import json, sys, datetime
-dl, ver, tag = sys.argv[1:4]
-with open('repos/altstore.json') as f:
-    src = json.load(f)
-app = src['apps'][0]
-versions = app.setdefault('versions', [])
-versions.insert(0, {
-    'version': ver,
-    'date': datetime.datetime.now(datetime.timezone.utc).date().isoformat(),
-    'downloadURL': dl,
-    'size': 0,
-    'minOSVersion': '15.0',
-})
-for v in versions:
-    if v.get('size') == 0:
-        v.pop('size', None)
-app['version'] = ver
-app['versionDate'] = versions[0]['date']
-app['versionDescription'] = f'Zhenzhong {tag}'
-app['downloadURL'] = dl
-with open('repos/altstore.json', 'w') as f:
-    json.dump(src, f, ensure_ascii=False, indent=2)
-PY
+  TODAY=$(date -u +%Y-%m-%d)
+  jq --arg dl "$DL" --arg ver "$VER" --arg tag "$RELEASE_TAG" --arg today "$TODAY" '
+    .apps[0].versions = ([{
+      version: $ver,
+      date: $today,
+      downloadURL: $dl,
+      minOSVersion: "15.0"
+    }] + .apps[0].versions) |
+    .apps[0].version = $ver |
+    .apps[0].versionDate = $today |
+    .apps[0].versionDescription = ("Zhenzhong " + $tag) |
+    .apps[0].downloadURL = $dl
+  ' repos/altstore.json > /tmp/altstore.json
+  mv /tmp/altstore.json repos/altstore.json
   if [ -n "${GITLAB_RELEASE_SSH_KEY:-}" ]; then
     git add repos/altstore.json
     git -c user.name="GitLab CI" -c user.email="ci@gitlab.com" \

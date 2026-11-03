@@ -243,6 +243,8 @@ jobs:
           flutter pub get
           flutter build web --release --base-href /zhenzhong/app/ --build-name="$VERSION" --build-number="$BUILD_NUMBER"
           tar -czf "$A/zhenzhong-web.tar.gz" -C build/web .
+          (cd landing && flutter pub get && flutter build web --release --base-href /zhenzhong/)
+          tar -czf "$A/zhenzhong-landing.tar.gz" -C landing/build/web .
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
