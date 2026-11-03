@@ -1,7 +1,7 @@
 name: zhenzhong
 description: "震中 - a FOSS Mahjongg solitaire game."
 publish_to: 'none'
-version: 0.0.1+1
+version: 0.1.0+3671116
 
 environment:
   sdk: ^3.9.0
