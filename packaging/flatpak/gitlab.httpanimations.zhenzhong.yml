@@ -16,7 +16,7 @@ modules:
       - cp -r bundle/* /app/share/zhenzhong/
       - ln -s /app/share/zhenzhong/zhenzhong /app/bin/zhenzhong
       - install -Dm644 zhenzhong.desktop /app/share/applications/gitlab.httpanimations.zhenzhong.desktop
-      - install -Dm644 gitlab.httpanimations.zhenzhong.png /app/share/icons/hicolor/512x512/apps/gitlab.httpanimations.gitlab.httpanimations.zhenzhong.png
+      - install -Dm644 gitlab.httpanimations.zhenzhong.png /app/share/icons/hicolor/512x512/apps/gitlab.httpanimations.zhenzhong.png
     sources:
       - type: dir
         path: src
