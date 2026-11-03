@@ -16,7 +16,8 @@ void main() {
     return testApp(
       settings: settings,
       stats: await testStats(),
-      game: MahjongGame(random: Random(42)),
+      game:
+          MahjongGame(random: Random(42), clock: () => DateTime(2024)),
       windowActions: FakeWindowActions(),
     );
   }
