@@ -15,7 +15,6 @@ flutter pub get
 flutter build web --release --base-href /"$CI_PROJECT_NAME"/app/
 cp -r build/web/. public/app/
 mkdir -p public/flatpak
-cp /tmp/zhenzhong-keys-does-not-exist 2>/dev/null || true
 REPO_TMP=$(mktemp -d)
 if [ -n "${GITHUB_RUN_ID:-}" ]; then
   for arch in x86_64 aarch64; do

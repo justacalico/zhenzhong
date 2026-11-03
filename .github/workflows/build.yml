@@ -194,6 +194,7 @@ jobs:
           { echo "Package: zhenzhong"; echo "Version: $VERSION"; echo "Section: games"; echo "Priority: optional"; echo "Architecture: $([ "$OUT" = arm64 ] && echo arm64 || echo amd64)"; echo "Maintainer: Zhenzhong CI <ci@gitlab.com>"; echo "Depends: libgtk-3-0"; echo "Description: Mahjongg solitaire game"; } > "$pd/DEBIAN/control"
           dpkg-deb --build "$pd" "$A/zhenzhong-linux-$OUT.deb" >/dev/null
           mkdir -p flatpak-repo-$FLATARCH
+          rm -rf packaging/flatpak/bundle && cp -r "$B" packaging/flatpak/bundle
           flatpak-builder --force-clean --repo="flatpak-repo-$FLATARCH" --arch="$FLATARCH" fpbuild packaging/flatpak/gitlab.httpanimations.zhenzhong.yml
           tar -czf "$A/flatpak-repo-$FLATARCH.tar.gz" -C "flatpak-repo-$FLATARCH" .
       - name: Build Windows
