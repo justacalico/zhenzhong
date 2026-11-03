@@ -12,11 +12,11 @@ modules:
   - name: zhenzhong
     buildsystem: simple
     build-commands:
-      - mkdir -p /app/bin /app/share/zhenzhong /app/share/applications /app/share/icons/hicolor/512x512/apps
+      - mkdir -p /app/bin /app/share/zhenzhong /app/share/applications /app/share/icons/hicolor/1024x1024/apps
       - cp -r bundle/* /app/share/zhenzhong/
       - ln -s /app/share/zhenzhong/zhenzhong /app/bin/zhenzhong
       - install -Dm644 zhenzhong.desktop /app/share/applications/gitlab.httpanimations.zhenzhong.desktop
-      - install -Dm644 zhenzhong.png /app/share/icons/hicolor/512x512/apps/gitlab.httpanimations.zhenzhong.png
+      - install -Dm644 zhenzhong.png /app/share/icons/hicolor/1024x1024/apps/gitlab.httpanimations.zhenzhong.png
     sources:
       - type: dir
         path: src
