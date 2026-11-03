@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zhenzhong/models/app_update.dart';
 import 'package:zhenzhong/services/version_checker.dart';
-import 'package:zhenzhong/state/stats_store.dart';
 import 'package:zhenzhong/state/update_store.dart';
 import 'package:zhenzhong/utils/link_opener.dart';
 import 'package:zhenzhong/views/about_page.dart';
@@ -30,7 +29,7 @@ void main() {
     await tester.pumpWidget(wrap(AboutPage(
       updates: updates,
       stats: await testStats(),
-      linkOpener: LinkOpener(opener: FakeLinkOpener()),
+      linkOpener: LinkOpener(opener: FakeLinkOpener().call),
     )));
     await tester.pumpAndSettle();
     expect(find.text('Version 1.0.0'), findsOneWidget);
@@ -46,7 +45,7 @@ void main() {
     await tester.pumpWidget(wrap(AboutPage(
       updates: updates,
       stats: await testStats(),
-      linkOpener: LinkOpener(opener: opener),
+      linkOpener: LinkOpener(opener: opener.call),
     )));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('check_updates')));
@@ -73,7 +72,7 @@ void main() {
     await tester.pumpWidget(wrap(AboutPage(
       updates: storeFor(checker),
       stats: await testStats(),
-      linkOpener: LinkOpener(opener: opener),
+      linkOpener: LinkOpener(opener: opener.call),
     )));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('check_updates')));
@@ -95,7 +94,7 @@ void main() {
     await tester.pumpWidget(wrap(AboutPage(
       updates: storeFor(checker),
       stats: await testStats(),
-      linkOpener: LinkOpener(opener: FakeLinkOpener()),
+      linkOpener: LinkOpener(opener: FakeLinkOpener().call),
     )));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('check_updates')));
@@ -113,7 +112,7 @@ void main() {
     await tester.pumpWidget(wrap(AboutPage(
       updates: storeFor(FakeVersionChecker()),
       stats: s,
-      linkOpener: LinkOpener(opener: FakeLinkOpener()),
+      linkOpener: LinkOpener(opener: FakeLinkOpener().call),
     )));
     await tester.pumpAndSettle();
     expect(find.text('Games played'), findsOneWidget);
@@ -127,7 +126,7 @@ void main() {
     await tester.pumpWidget(wrap(AboutPage(
       updates: storeFor(FakeVersionChecker()),
       stats: await testStats(),
-      linkOpener: LinkOpener(opener: opener),
+      linkOpener: LinkOpener(opener: opener.call),
     )));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Source code'));

@@ -116,7 +116,7 @@ Widget testApp({
     stats: stats,
     updates: updates,
     game: game,
-    linkOpener: linkOpener ?? LinkOpener(opener: FakeLinkOpener()),
+    linkOpener: linkOpener ?? LinkOpener(opener: FakeLinkOpener().call),
     windowActions: windowActions ?? FakeWindowActions(),
   );
 }
