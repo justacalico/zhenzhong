@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
 Future<void> initializeWindow() async {
+  if (Platform.environment['FLUTTER_TEST'] == 'true') return;
   if (!Platform.isLinux && !Platform.isMacOS && !Platform.isWindows) {
     return;
   }

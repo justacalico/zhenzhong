@@ -65,8 +65,13 @@ void main() {
         (await SharedPreferences.getInstance()).getString('locale'),
         'ru',
       );
+      await store.setLocale(const Locale('en', 'GB'));
+      expect(
+        (await SharedPreferences.getInstance()).getString('locale'),
+        'en_GB',
+      );
       await store.setLocale(const Locale('ru'));
-      expect(notified, 1);
+      expect(notified, 3);
       await store.setLocale(null);
       expect(store.locale, isNull);
       expect(
@@ -162,3 +167,4 @@ void main() {
     });
   });
 }
+

@@ -20,15 +20,12 @@ MahjongGame rowGame(
   int tiles,
   List<TileKind> deck, {
   DateTime Function()? clock,
-}) =>
-    MahjongGame(
-      layout: [
-        for (var i = 0; i < tiles; i++) BoardPos(i * 2, 0, 0),
-      ],
-      deck: deck,
-      random: ZeroRandom(),
-      clock: clock,
-    );
+}) => MahjongGame(
+  layout: [for (var i = 0; i < tiles; i++) BoardPos(i * 2, 0, 0)],
+  deck: deck,
+  random: ZeroRandom(),
+  clock: clock,
+);
 
 List<int> kindIds(List<BoardTile> tiles) =>
     tiles.map((t) => t.kind.suit.index * 100 + t.kind.rank).toList()..sort();
@@ -221,9 +218,11 @@ void main() {
       expect(game.won, isFalse);
       game.tap(game.freeTiles()[0]);
       final sel = game.selected!;
-      game.tap(game
-          .freeTiles()
-          .firstWhere((t) => t != sel && t.kind.matches(sel.kind)));
+      game.tap(
+        game.freeTiles().firstWhere(
+          (t) => t != sel && t.kind.matches(sel.kind),
+        ),
+      );
       expect(game.won, isTrue);
     });
   });
@@ -247,11 +246,10 @@ void main() {
 
     test('undo after winning resumes the game', () {
       var now = DateTime(2026, 1, 1);
-      final game = rowGame(
-        2,
-        const [TileKind(Suit.bamboo, 3), TileKind(Suit.bamboo, 3)],
-        clock: () => now,
-      );
+      final game = rowGame(2, const [
+        TileKind(Suit.bamboo, 3),
+        TileKind(Suit.bamboo, 3),
+      ], clock: () => now);
       game.tap(game.tiles[0]);
       game.tap(game.tiles[1]);
       expect(game.won, isTrue);
@@ -295,9 +293,11 @@ void main() {
     test('shuffle on an undealable remainder falls back to random', () {
       final game = MahjongGame(random: Random(3));
       final stacked = game.tiles
-          .where((t) =>
-              t.pos == const BoardPos(14, 3, 1) ||
-              t.pos == const BoardPos(14, 3, 2))
+          .where(
+            (t) =>
+                t.pos == const BoardPos(14, 3, 1) ||
+                t.pos == const BoardPos(14, 3, 2),
+          )
           .toList();
       expect(stacked.length, 2);
       for (final t in game.tiles) {
@@ -338,11 +338,10 @@ void main() {
   group('timer', () {
     test('elapsed accumulates from the injected clock', () {
       var now = DateTime(2026, 1, 1, 12);
-      final game = rowGame(
-        2,
-        const [TileKind(Suit.bamboo, 3), TileKind(Suit.bamboo, 3)],
-        clock: () => now,
-      );
+      final game = rowGame(2, const [
+        TileKind(Suit.bamboo, 3),
+        TileKind(Suit.bamboo, 3),
+      ], clock: () => now);
       now = now.add(const Duration(seconds: 90));
       expect(game.elapsed, const Duration(seconds: 90));
       game.tap(game.tiles[0]);
@@ -360,8 +359,7 @@ void main() {
         const TileKind(Suit.bamboo, 3),
         const TileKind(Suit.circles, 5),
         const TileKind(Suit.circles, 5),
-      ])
-        ..addListener(() => count++);
+      ])..addListener(() => count++);
       game.tap(game.freeTiles()[0]);
       expect(count, 1);
       game.tap(game.selected!);
@@ -377,5 +375,13 @@ void main() {
       game.newDeal();
       expect(count, 7);
     });
+  });
+
+  test('BoardPos value semantics', () {
+    const a = BoardPos(1, 2, 3);
+    expect(a, const BoardPos(1, 2, 3));
+    expect(a.hashCode, const BoardPos(1, 2, 3).hashCode);
+    expect(a == const BoardPos(2, 2, 3), isFalse);
+    expect(a.toString(), 'BoardPos(1, 2, 3)');
   });
 }

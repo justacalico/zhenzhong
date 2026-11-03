@@ -12,10 +12,10 @@ import 'package:zhenzhong/widgets/tile_widget.dart';
 import 'helpers.dart';
 
 MahjongGame twoTileGame() => MahjongGame(
-      layout: const [BoardPos(0, 0, 0), BoardPos(4, 0, 0)],
-      deck: const [TileKind(Suit.bamboo, 3), TileKind(Suit.bamboo, 3)],
-      random: _Zero(),
-    );
+  layout: const [BoardPos(0, 0, 0), BoardPos(4, 0, 0)],
+  deck: const [TileKind(Suit.bamboo, 3), TileKind(Suit.bamboo, 3)],
+  random: _Zero(),
+);
 
 class _Zero implements Random {
   @override
@@ -29,10 +29,10 @@ class _Zero implements Random {
 }
 
 Widget wrap(Widget child) => MaterialApp(
-      localizationsDelegates: testDelegates,
-      supportedLocales: testLocales,
-      home: Scaffold(body: child),
-    );
+  localizationsDelegates: testDelegates,
+  supportedLocales: testLocales,
+  home: Scaffold(body: child),
+);
 
 void main() {
   setUpAll(loadTestFonts);
@@ -135,4 +135,59 @@ void main() {
     expect(s.gamesWon, 0);
     await tester.pumpWidget(const SizedBox());
   });
+
+  testWidgets('stuck dialog offers keep playing', (tester) async {
+    final game = stuckGame();
+    makeStuck(game);
+    await tester.pumpWidget(wrap(GamePage(game: game, stats: await stats())));
+    await tester.pump();
+    await tester.tap(find.byType(MahjongTileWidget).first);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('stuck_dialog')), findsOneWidget);
+    await tester.tap(find.text('Keep playing'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('stuck_dialog')), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('stuck dialog can shuffle the board', (tester) async {
+    final game = stuckGame();
+    makeStuck(game);
+    await tester.pumpWidget(wrap(GamePage(game: game, stats: await stats())));
+    await tester.pump();
+    await tester.tap(find.byType(MahjongTileWidget).first);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('stuck_dialog')), findsOneWidget);
+    await tester.tap(find.descendant(
+      of: find.byKey(const Key('stuck_dialog')),
+      matching: find.byType(FilledButton),
+    ));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('stuck_dialog')), findsNothing);
+    expect(game.tilesRemaining, 2);
+    await tester.pumpWidget(const SizedBox());
+  });
+}
+
+MahjongGame stuckGame() => MahjongGame(
+  layout: const [
+    BoardPos(0, 0, 0),
+    BoardPos(2, 0, 0),
+    BoardPos(4, 0, 0),
+    BoardPos(6, 0, 0),
+  ],
+  deck: const [
+    TileKind(Suit.bamboo, 3),
+    TileKind(Suit.bamboo, 3),
+    TileKind(Suit.circles, 5),
+    TileKind(Suit.circles, 5),
+  ],
+  random: _Zero(),
+);
+
+void makeStuck(MahjongGame game) {
+  game.tap(game.tiles[0]);
+  game.tap(game.tiles[3]);
+  game.tiles[1].kind = const TileKind(Suit.dragon, 1);
+  game.tiles[2].kind = const TileKind(Suit.dragon, 2);
 }
