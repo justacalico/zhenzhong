@@ -13,12 +13,14 @@ class BoardView extends StatelessWidget {
   final MahjongGame game;
   final Set<int> hintIds;
   final ValueChanged<BoardTile> onTileTap;
+  final bool dimBlocked;
 
   const BoardView({
     super.key,
     required this.game,
     required this.onTileTap,
     this.hintIds = const {},
+    this.dimBlocked = false,
   });
 
   @override
@@ -70,6 +72,7 @@ class BoardView extends StatelessWidget {
                     selected: game.selectedId == tile.id,
                     free: game.isFree(tile),
                     hinted: hintIds.contains(tile.id),
+                    dimBlocked: dimBlocked,
                     onTap: () => onTileTap(tile),
                   ),
                 ),

@@ -83,7 +83,8 @@ class ZhenzhongApp extends StatelessWidget {
             NavDestination(
               icon: Icons.grid_4x4,
               label: (l) => l.navGame,
-              buildPage: () => GamePage(game: game, stats: stats),
+              buildPage: () =>
+                  GamePage(game: game, stats: stats, settings: settings),
             ),
             NavDestination(
               icon: Icons.help_outline,

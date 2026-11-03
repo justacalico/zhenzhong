@@ -80,6 +80,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsTheme => '主题';
 
   @override
+  String get settingsTiles => '牌面';
+
+  @override
+  String get highlightFreeOnly => '仅高亮可用的牌';
+
+  @override
   String get languageSystem => '跟随系统';
 
   @override
@@ -107,7 +113,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get helpFreeTitle => '可用牌';
 
   @override
-  String get helpFree => '一张牌在没有被压住，且左侧或右侧至少有一边敞开时就是可用的。被挡住的牌会变暗。';
+  String get helpFree =>
+      '一张牌在没有被压住，且左侧或右侧至少有一边敞开时就是可用的。在设置中开启“仅高亮可用的牌”可以让其它牌变暗。';
 
   @override
   String get helpMatchTitle => '配对';

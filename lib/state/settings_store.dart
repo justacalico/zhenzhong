@@ -8,11 +8,13 @@ const systemLocale = Locale('en', 'GB');
 class SettingsStore extends ChangeNotifier {
   static const _themeKey = 'theme_mode';
   static const _localeKey = 'locale';
+  static const _highlightFreeOnlyKey = 'highlight_free_only';
 
   final SharedPreferences _prefs;
 
   AppThemeMode _themeMode = AppThemeMode.system;
   Locale? _locale;
+  var _highlightFreeOnly = false;
 
   SettingsStore(this._prefs);
 
@@ -27,11 +29,14 @@ class SettingsStore extends ChangeNotifier {
       store._locale =
           parts.length == 1 ? Locale(parts[0]) : Locale(parts[0], parts[1]);
     }
+    store._highlightFreeOnly =
+        prefs.getBool(_highlightFreeOnlyKey) ?? false;
     return store;
   }
 
   AppThemeMode get themeMode => _themeMode;
   Locale? get locale => _locale;
+  bool get highlightFreeOnly => _highlightFreeOnly;
 
   ThemeMode get materialThemeMode => switch (_themeMode) {
         AppThemeMode.system => ThemeMode.system,
@@ -58,5 +63,12 @@ class SettingsStore extends ChangeNotifier {
           : '${locale.languageCode}_${locale.countryCode}';
       await _prefs.setString(_localeKey, code);
     }
+  }
+
+  Future<void> setHighlightFreeOnly(bool value) async {
+    if (_highlightFreeOnly == value) return;
+    _highlightFreeOnly = value;
+    notifyListeners();
+    await _prefs.setBool(_highlightFreeOnlyKey, value);
   }
 }

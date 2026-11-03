@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../game/board.dart';
 import '../l10n/l10n.dart';
+import '../state/settings_store.dart';
 import '../state/stats_store.dart';
 import '../utils/time_fmt.dart';
 import '../widgets/board_view.dart';
@@ -11,11 +12,13 @@ import '../widgets/board_view.dart';
 class GamePage extends StatefulWidget {
   final MahjongGame game;
   final StatsStore stats;
+  final SettingsStore settings;
 
   const GamePage({
     super.key,
     required this.game,
     required this.stats,
+    required this.settings,
   });
 
   @override
@@ -191,6 +194,7 @@ class _GamePageState extends State<GamePage> {
               game: game,
               hintIds: _hintIds,
               onTileTap: game.tap,
+              dimBlocked: widget.settings.highlightFreeOnly,
             ),
           ),
         ),

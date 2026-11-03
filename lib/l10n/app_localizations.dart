@@ -229,6 +229,18 @@ abstract class AppLocalizations {
   /// **'Theme'**
   String get settingsTheme;
 
+  /// No description provided for @settingsTiles.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Tiles'**
+  String get settingsTiles;
+
+  /// No description provided for @highlightFreeOnly.
+  ///
+  /// In en_GB, this message translates to:
+  /// **'Only highlight free tiles'**
+  String get highlightFreeOnly;
+
   /// No description provided for @languageSystem.
   ///
   /// In en_GB, this message translates to:
@@ -286,7 +298,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpFree.
   ///
   /// In en_GB, this message translates to:
-  /// **'A tile is free when no tile covers it and at least one of its left or right sides is open. Blocked tiles appear dimmed.'**
+  /// **'A tile is free when no tile covers it and at least one of its left or right sides is open. Turn on \'Only highlight free tiles\' in settings to dim the rest.'**
   String get helpFree;
 
   /// No description provided for @helpMatchTitle.

@@ -69,6 +69,16 @@ class SettingsPage extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 16),
+          Text(l.settingsTiles,
+              style: Theme.of(context).textTheme.titleMedium),
+          SwitchListTile(
+            key: const Key('highlight_free_only'),
+            value: settings.highlightFreeOnly,
+            onChanged: settings.setHighlightFreeOnly,
+            title: Text(l.highlightFreeOnly),
+            dense: true,
+          ),
         ],
       ),
     );

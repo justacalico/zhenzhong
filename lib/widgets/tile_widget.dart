@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../game/board.dart';
+import '../game/tile.dart';
+import 'tile_art.dart';
 
 class MahjongTileWidget extends StatefulWidget {
   final BoardTile tile;
@@ -10,6 +12,7 @@ class MahjongTileWidget extends StatefulWidget {
   final bool selected;
   final bool free;
   final bool hinted;
+  final bool dimBlocked;
   final VoidCallback? onTap;
 
   const MahjongTileWidget({
@@ -21,6 +24,7 @@ class MahjongTileWidget extends StatefulWidget {
     this.selected = false,
     this.free = true,
     this.hinted = false,
+    this.dimBlocked = false,
     this.onTap,
   });
 
@@ -48,6 +52,7 @@ class _MahjongTileWidgetState extends State<MahjongTileWidget> {
             selected: widget.selected,
             free: widget.free,
             hinted: widget.hinted,
+            dimBlocked: widget.dimBlocked,
             hovered: _hovering && widget.free && !widget.tile.removed,
           ),
         ),
@@ -64,6 +69,7 @@ class _TilePainter extends CustomPainter {
   final bool selected;
   final bool free;
   final bool hinted;
+  final bool dimBlocked;
   final bool hovered;
 
   _TilePainter({
@@ -74,6 +80,7 @@ class _TilePainter extends CustomPainter {
     required this.selected,
     required this.free,
     required this.hinted,
+    required this.dimBlocked,
     required this.hovered,
   });
 
@@ -117,6 +124,11 @@ class _TilePainter extends CustomPainter {
 
   void _paintFace(Canvas canvas) {
     final kind = tile.kind;
+    if (kind.suit == Suit.flower || kind.suit == Suit.season) {
+      paintTileArt(
+          canvas, kind, Rect.fromLTWH(0, 0, faceWidth, faceHeight));
+      return;
+    }
     final bottom = kind.bottomGlyph;
     final topSize = bottom == null ? faceHeight * 0.52 : faceHeight * 0.42;
 
@@ -168,7 +180,7 @@ class _TilePainter extends CustomPainter {
   }
 
   void _paintOverlay(Canvas canvas, RRect faceRect) {
-    if (!free && !tile.removed) {
+    if (dimBlocked && !free && !tile.removed) {
       canvas.drawRRect(
         faceRect,
         Paint()..color = Colors.black.withValues(alpha: 0.35),
@@ -202,6 +214,7 @@ class _TilePainter extends CustomPainter {
       old.selected != selected ||
       old.free != free ||
       old.hinted != hinted ||
+      old.dimBlocked != dimBlocked ||
       old.hovered != hovered ||
       old.tile.removed != tile.removed ||
       old.tile.kind != tile.kind;

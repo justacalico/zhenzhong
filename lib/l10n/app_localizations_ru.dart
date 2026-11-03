@@ -81,6 +81,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get settingsTheme => 'Тема';
 
   @override
+  String get settingsTiles => 'Кости';
+
+  @override
+  String get highlightFreeOnly => 'Подсвечивать только свободные кости';
+
+  @override
   String get languageSystem => 'Системный';
 
   @override
@@ -110,7 +116,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get helpFree =>
-      'Кость свободна, если её ничто не накрывает и хотя бы одна сторона, левая или правая, открыта. Заблокированные кости затемнены.';
+      'Кость свободна, если её ничто не накрывает и хотя бы одна сторона, левая или правая, открыта. Включите «Подсвечивать только свободные кости» в настройках, чтобы затемнять остальные.';
 
   @override
   String get helpMatchTitle => 'Пары';

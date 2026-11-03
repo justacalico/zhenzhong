@@ -57,6 +57,17 @@ void main() {
       await tester.pump();
       expect(settings.themeMode, AppThemeMode.system);
     });
+
+    testWidgets('highlight switch updates the store', (tester) async {
+      final settings = await testSettings();
+      await tester.pumpWidget(wrap(SettingsPage(settings: settings)));
+      await tester.tap(find.byKey(const Key('highlight_free_only')));
+      await tester.pump();
+      expect(settings.highlightFreeOnly, isTrue);
+      await tester.tap(find.byKey(const Key('highlight_free_only')));
+      await tester.pump();
+      expect(settings.highlightFreeOnly, isFalse);
+    });
   });
 
   group('HelpPage', () {
@@ -92,6 +103,24 @@ void main() {
       )));
       await tester.tap(find.byType(MahjongTileWidget));
       expect(taps, 1);
+    });
+
+    testWidgets('dimBlocked darkens a blocked tile', (tester) async {
+      final tile = BoardTile(
+        id: 1,
+        pos: const BoardPos(0, 0, 0),
+        kind: const TileKind(Suit.flower, 2),
+      );
+      await tester.pumpWidget(wrap(Center(
+        child: MahjongTileWidget(
+          tile: tile,
+          width: 60,
+          height: 76,
+          free: false,
+          dimBlocked: true,
+        ),
+      )));
+      await tester.pump();
     });
 
     testWidgets('hover lightens a free tile', (tester) async {

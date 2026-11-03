@@ -81,6 +81,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsTheme => 'Theme';
 
   @override
+  String get settingsTiles => 'Tiles';
+
+  @override
+  String get highlightFreeOnly => 'Only highlight free tiles';
+
+  @override
   String get languageSystem => 'System';
 
   @override
@@ -110,7 +116,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpFree =>
-      'A tile is free when no tile covers it and at least one of its left or right sides is open. Blocked tiles appear dimmed.';
+      'A tile is free when no tile covers it and at least one of its left or right sides is open. Turn on \'Only highlight free tiles\' in settings to dim the rest.';
 
   @override
   String get helpMatchTitle => 'Matching';
@@ -283,6 +289,12 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
   String get settingsTheme => 'Theme';
 
   @override
+  String get settingsTiles => 'Tiles';
+
+  @override
+  String get highlightFreeOnly => 'Only highlight free tiles';
+
+  @override
   String get languageSystem => 'System';
 
   @override
@@ -312,7 +324,7 @@ class AppLocalizationsEnGb extends AppLocalizationsEn {
 
   @override
   String get helpFree =>
-      'A tile is free when no tile covers it and at least one of its left or right sides is open. Blocked tiles appear dimmed.';
+      'A tile is free when no tile covers it and at least one of its left or right sides is open. Turn on \'Only highlight free tiles\' in settings to dim the rest.';
 
   @override
   String get helpMatchTitle => 'Matching';

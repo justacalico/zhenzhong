@@ -28,6 +28,8 @@ void main() {
       expect(l.close, isNotEmpty);
       expect(l.settingsLanguage, isNotEmpty);
       expect(l.settingsTheme, isNotEmpty);
+      expect(l.settingsTiles, isNotEmpty);
+      expect(l.highlightFreeOnly, isNotEmpty);
       expect(l.languageSystem, isNotEmpty);
       expect(l.languageEnGB, isNotEmpty);
       expect(l.themeSystem, isNotEmpty);

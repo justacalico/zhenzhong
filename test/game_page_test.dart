@@ -41,7 +41,7 @@ void main() {
 
   testWidgets('shows status chips and controls', (tester) async {
     final game = twoTileGame();
-    await tester.pumpWidget(wrap(GamePage(game: game, stats: await stats())));
+    await tester.pumpWidget(wrap(GamePage(game: game, stats: await stats(), settings: await testSettings())));
     await tester.pump();
     expect(find.byKey(const Key('btn_new')), findsOneWidget);
     expect(find.byKey(const Key('btn_hint')), findsOneWidget);
@@ -54,7 +54,7 @@ void main() {
   testWidgets('tapping a tile pair wins and shows the dialog', (tester) async {
     final game = twoTileGame();
     final s = await stats();
-    await tester.pumpWidget(wrap(GamePage(game: game, stats: s)));
+    await tester.pumpWidget(wrap(GamePage(game: game, stats: s, settings: await testSettings())));
     await tester.pump();
     await tester.tap(find.byType(MahjongTileWidget).first);
     await tester.pump();
@@ -72,7 +72,7 @@ void main() {
 
   testWidgets('undo is disabled until a move happens', (tester) async {
     final game = twoTileGame();
-    await tester.pumpWidget(wrap(GamePage(game: game, stats: await stats())));
+    await tester.pumpWidget(wrap(GamePage(game: game, stats: await stats(), settings: await testSettings())));
     await tester.pump();
     final undo = tester.widget<TextButton>(find.byKey(const Key('btn_undo')));
     expect(undo.onPressed, isNull);
@@ -88,7 +88,7 @@ void main() {
 
   testWidgets('hint highlights a pair briefly', (tester) async {
     final game = twoTileGame();
-    await tester.pumpWidget(wrap(GamePage(game: game, stats: await stats())));
+    await tester.pumpWidget(wrap(GamePage(game: game, stats: await stats(), settings: await testSettings())));
     await tester.pump();
     await tester.tap(find.byKey(const Key('btn_hint')));
     await tester.pump();
@@ -98,7 +98,7 @@ void main() {
 
   testWidgets('shuffle button triggers a shuffle', (tester) async {
     final game = twoTileGame();
-    await tester.pumpWidget(wrap(GamePage(game: game, stats: await stats())));
+    await tester.pumpWidget(wrap(GamePage(game: game, stats: await stats(), settings: await testSettings())));
     await tester.pump();
     await tester.tap(find.byKey(const Key('btn_shuffle')));
     await tester.pump();
@@ -122,7 +122,7 @@ void main() {
       random: _Zero(),
     );
     final s = await stats();
-    await tester.pumpWidget(wrap(GamePage(game: game, stats: s)));
+    await tester.pumpWidget(wrap(GamePage(game: game, stats: s, settings: await testSettings())));
     await tester.pump();
     await tester.tap(find.byType(MahjongTileWidget).first);
     await tester.tap(find.byType(MahjongTileWidget).last);
@@ -139,7 +139,7 @@ void main() {
   testWidgets('stuck dialog offers keep playing', (tester) async {
     final game = stuckGame();
     makeStuck(game);
-    await tester.pumpWidget(wrap(GamePage(game: game, stats: await stats())));
+    await tester.pumpWidget(wrap(GamePage(game: game, stats: await stats(), settings: await testSettings())));
     await tester.pump();
     await tester.tap(find.byType(MahjongTileWidget).first);
     await tester.pumpAndSettle();
@@ -153,7 +153,7 @@ void main() {
   testWidgets('stuck dialog can shuffle the board', (tester) async {
     final game = stuckGame();
     makeStuck(game);
-    await tester.pumpWidget(wrap(GamePage(game: game, stats: await stats())));
+    await tester.pumpWidget(wrap(GamePage(game: game, stats: await stats(), settings: await testSettings())));
     await tester.pump();
     await tester.tap(find.byType(MahjongTileWidget).first);
     await tester.pumpAndSettle();

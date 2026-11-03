@@ -81,6 +81,12 @@ class AppLocalizationsGa extends AppLocalizations {
   String get settingsTheme => 'Téama';
 
   @override
+  String get settingsTiles => 'Tíleanna';
+
+  @override
+  String get highlightFreeOnly => 'Aibhsigh tíleanna saora amháin';
+
+  @override
   String get languageSystem => 'Córas';
 
   @override
@@ -110,7 +116,7 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String get helpFree =>
-      'Tá tíl saor nuair nach bhfuil aon tíl eile ina luí uirthi agus nuair atá a taobh clé nó a taobh deas ar a laghad oscailte. Tá tíleanna blocáilte dorchaithe.';
+      'Tá tíl saor nuair nach bhfuil aon tíl eile ina luí uirthi agus nuair atá a taobh clé nó a taobh deas ar a laghad oscailte. Cas air \'Aibhsigh tíleanna saora amháin\' sna socruithe chun na tíleanna eile a dhorchú.';
 
   @override
   String get helpMatchTitle => 'Meaitseáil';

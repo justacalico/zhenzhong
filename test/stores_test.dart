@@ -79,6 +79,28 @@ void main() {
         isNull,
       );
     });
+
+    test('setHighlightFreeOnly persists and notifies', () async {
+      SharedPreferences.setMockInitialValues(
+          {'highlight_free_only': true});
+      var store = await SettingsStore.load();
+      expect(store.highlightFreeOnly, isTrue);
+      var notified = 0;
+      store.addListener(() => notified++);
+      await store.setHighlightFreeOnly(true);
+      expect(notified, 0);
+      await store.setHighlightFreeOnly(false);
+      expect(notified, 1);
+      expect(store.highlightFreeOnly, isFalse);
+      expect(
+        (await SharedPreferences.getInstance())
+            .getBool('highlight_free_only'),
+        isFalse,
+      );
+      SharedPreferences.setMockInitialValues({});
+      store = await SettingsStore.load();
+      expect(store.highlightFreeOnly, isFalse);
+    });
   });
 
   group('StatsStore', () {
